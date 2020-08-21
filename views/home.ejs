@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<style>
+    #name{
+        width:40%;
+    }
+    #userDetails{
+        position: relative;
+        margin-top:3rem;
+        width:50%;
+    }
+    #res{
+        height:300px;
+        overflow: scroll;
+        position: absolute;
+
+    }
+    .search{
+        width:100%;
+        border:0.1rem solid #f4f4f4;
+        padding:0.8rem;
+        z-index:3;
+        background-color: white;;
+    }
+    .search:hover{
+        background-color: #e5e5e5;
+        border:0.1rem solid #e5e5e5;
+        cursor:pointer;
+
+    }
+    button{
+        margin-top:1.2rem;
+        margin-right:1rem;
+    }
+    a{
+        margin-right:1.2rem;
+    }
+</style>
+<body>
+    <div class='container' id='userDetails'>
+        <h1>Hi ,search users by names/rollno</h1>
+        <a href="/register">Register</a>
+        <a href="/update">Update</a>
+        <a href="/delete">Delete</a>
+
+        <input type="text" id='roll' class='form-control' placeholder="Search Name/Roll No.">
+        <div id='res' class='container'>
+        </div>
+        <div id='resultDisplay' class='container'>
+        </div>
+
+    </div>
+    
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    document.getElementById('roll').addEventListener('keyup',function(){
+        $.ajax({
+                url:'/users',
+                type:'GET',
+                dataType:'json',
+                success:(dat)=>{
+                    document.getElementById('res').innerHTML='';
+                    console.log(dat);
+                    console.log($('#roll').val());
+                    if($('#roll').val()===undefined){
+                        document.getElementById('res').innerHTML='';
+                    }
+                    if($('#roll').val()===''){
+                        document.getElementById('res').innerHTML='';
+                    }
+                    for(var j=0;j<dat.length;j++){
+                            if(dat[j].roll.includes($('#roll').val()) || dat[j].name.includes($('#roll').val())){
+                        document.getElementById('res').innerHTML+='<div class="container search" id="s'+j+'">'+dat[j].name+'-'+dat[j].roll+'</div>'
+                        }
+                    }
+                    document.addEventListener('click',function(){
+        document.getElementById('res').innerHTML='';
+    })
+
+                }
+            })
+
+    })
+</script>
+</html>

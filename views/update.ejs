@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+<style>
+    #verify{
+        margin-top:3rem;
+    width:50%;
+    }
+#main{
+    margin-top:3rem;
+    width:50%;
+}
+#error{
+    margin-top:2rem;
+}
+</style>
+<body>
+    <div class="container" id='verify'>
+        <h3>Verify Yourself</h3>
+        <form>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">RollNo</label>
+              <div class="col-sm-10">
+                <input type="number"  class="form-control" id="staticRoll" >
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">DOB</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control" id="staticdob" placeholder="registered DOB">
+              </div>
+            </div>
+            <button id='submitver' class="btn btn-primary">Verify</button>
+            <div class='container' id='error'></div>
+          </form>
+    </div>
+    <div class="container" id='main' style="display: none;">
+        <h3>Update your details</h3>
+        <form action="/update" method="POST">
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Roll No.</label>
+              <div class="col-sm-10">
+                <input type="Number" readonly class="form-control-plaintext" id="updateRoll" name='roll' required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">DOB</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control" id="updateDob" name='dob' required>
+              </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="updateName" name='name' required>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-success">Update</button>
+          </form>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+let rollVer;
+let dobVer;
+document.getElementById('submitver').addEventListener('click',function(e){
+e.preventDefault();
+            $.ajax({
+                url:'/users',
+                type:'GET',
+                dataType:'json',
+                success:(dat)=>{
+                    rollVer=document.getElementById('staticRoll').value;
+                    dobVer=document.getElementById('staticdob').value;
+                    console.log(dat);
+                    for(var j=0;j<dat.length;j++){
+                        if(dat[j].roll===rollVer){
+                            if(dat[j].dob===dobVer){
+                                console.log(dat[j].dob);
+                                document.getElementById('main').style.display='block';
+                                document.getElementById('verify').style.display='none';
+                                document.getElementById('updateRoll').value=rollVer;
+                            }
+                            else{
+                                document.getElementById('error').innerHTML+='<div class="alert alert-danger" role="alert">Roll No. and DOB doesnt match</div>';
+                                break
+                            }
+                        }
+                    }
+                }
+            })
+})
+
+</script>
+</html>

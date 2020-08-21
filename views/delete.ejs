@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <title>Delete</title>
+</head>
+<style>
+    #main{
+        margin-top:3rem;
+        width:50%;
+    }
+</style>
+<body>
+    <div class="container" id='main'>
+        <% for(var i=0;i<arr.length;i++){%>
+            <ul class="list-group">
+                <li class="list-group-item" id='list<%=i%>'><%=arr[i].name%> - <%=arr[i].roll%><button class="btn btn-danger float-right" id='del<%=i%>' value='<%=arr[i].name%>,<%=arr[i].roll%>'>Delete</button></li>
+            </ul>
+        <% }%>
+    </div>
+</body>
+<script src = "/socket.io/socket.io.js"></script>
+
+<script>
+var socket = io();
+length=document.getElementsByClassName('btn-danger').length;
+for(let j=0;j<length;j++){
+    document.getElementById('del'+j).addEventListener('click',function(e){
+        e.preventDefault();
+        document.getElementById('list'+j).style.display='none';
+        det=document.getElementById('del'+j).value.split(',')
+        console.log(det);
+        socket.emit('delete',det)
+    })
+}
+</script>
+</html>
