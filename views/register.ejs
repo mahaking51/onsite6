@@ -115,7 +115,7 @@ a:hover{
   <input type="text" id="inputName" name='name'class="form-control" placeholder="Name" required>
   <input type="date" id="inputName" name='dob'class="form-control" placeholder="DOB" required>
 
-  <button class="btn btn-lg btn-primary btn-block" type="submit" id='submitbut'>Register</button>
+  <button class="btn btn-lg btn-primary btn-block" type="submit" id='submitbut' >Register</button>
   <p class="mt-5 mb-3 text-muted">&copy; 2019-2023</p>
 </form>
 </body>
@@ -129,28 +129,30 @@ window.onload=()=>{
                 dataType:'json',
                 success:(dat)=>{
                     document.getElementById('status').innerHTML="";
-                        console.log(dat);
+                        console.log();
                         roll=document.getElementById('inputRoll').value;
                         if(roll.length<9){
                             document.getElementById('status').innerHTML+="Invalid Roll No.";
                             document.getElementById('submitbut').disabled=true;
-  
                         }
                         else{
-                            document.getElementById('submitbut').disabled=false;
-
-                        }
+                          document.getElementById('submitbut').disabled=false;
+                          }
                         for(var i=0;i<dat.length;i++){
                             if(dat[i].roll===(roll)){
                                 document.getElementById('status').innerHTML+="already registered";
-                                document.getElementById('submitbut').disabled=true;
-                            }
-                            else{
-                                document.getElementById('submitbut').disabled=false;
-
+                                flag=1
+                                document.getElementById('submitbut').disabled=true
                             }
                         }
+                        if(flag==0){
+                              flag=0
+                              document.getElementById('submitbut').disabled=false           
+                        }
+
+                        
                 }
+                
             })
 })
 }
